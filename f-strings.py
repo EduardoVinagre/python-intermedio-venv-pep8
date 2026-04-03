@@ -27,3 +27,34 @@ print(text_if)
 
 text_if_2 = f"Hola {name}, eres {'mayor' if edad >= 18 else 'menor'} de edad."
 print(text_if_2)
+
+bank_balance = 1200000000
+text = f"Tu saldo en la cuenta bancaria es: {bank_balance:,}"
+print(text)
+
+stock_price = 1234.56789
+text = f"El precio de la acción es: {stock_price:.2f}"
+print(text)
+
+user_id = 1
+text = f"El ID del usuario es: {user_id:04d}"
+print(text)
+
+
+product = "Laptop"
+price = 1000
+
+text = f"Producto: {product:>15} | ${price:>15,.2f}"
+print(text)
+text = f"Producto: {product:<15} | ${price:<15,.2f}"
+print(text)
+print(f"{text}\n{text}")
+
+
+from datetime import datetime
+
+fecha = datetime(2024, 6, 1)
+text = f"La fecha completa es: {fecha}"
+print(text)
+text = f"La fecha formateada es: {fecha:%A %d de %B de %Y a las %I:%M %p}"
+print(text)
