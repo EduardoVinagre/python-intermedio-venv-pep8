@@ -1,3 +1,5 @@
+from datetime import datetime
+
 name = "Ana"
 year = 2020
 text = f"Hola, {name}! Bienvenido al sistema de análisis de noticias."
@@ -50,8 +52,6 @@ text = f"Producto: {product:<15} | ${price:<15,.2f}"
 print(text)
 print(f"{text}\n{text}")
 
-
-from datetime import datetime
 
 fecha = datetime(2024, 6, 1)
 text = f"La fecha completa es: {fecha}"
