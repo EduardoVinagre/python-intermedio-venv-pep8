@@ -1,4 +1,10 @@
+import locale
 from datetime import datetime
+
+try:
+    locale.setlocale(locale.LC_ALL, "es_ES.UTF-8")
+except locale.Error:
+    print("La configuración regional 'es_ES' no está disponible en este sistema.")
 
 name = "Ana"
 year = 2020
@@ -58,3 +64,11 @@ text = f"La fecha completa es: {fecha}"
 print(text)
 text = f"La fecha formateada es: {fecha:%A %d de %B de %Y a las %I:%M %p}"
 print(text)
+
+ahora = datetime.now()
+
+# Formatear la fecha
+# %A: Día completo, %d: Día número, %B: Mes completo, %Y: Año, %I: Hora (12h), %M: Minutos, %p: AM/PM
+formato = ahora.strftime("%A %d de %B de %Y a las %I:%M %p")
+
+print(formato)

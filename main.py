@@ -4,8 +4,8 @@ Sistema de análisis de noticias con APIs múltiples.
 """
 
 # PEP 8: Configuración centralizada - constantes en MAYÚSCULAS con guiones bajos
-API_TIMEOUT = 30
-MAX_RETRIES = 3
+API_TIMEOUT_DEFAULT = 30
+MAX_RETRIES_DEFAULT = 3
 DEFAULT_LANGUAGE = "es"  # PEP 8: Uso de comillas dobles para cadenas de texto
 
 
@@ -41,3 +41,33 @@ def process_article_data(raw_data):
 # Imports ordenados: estándar -> terceros -> locales, cada grupo separado por una línea en blanco
 # Líneas en blanco: PEP 8 recomienda usar líneas en blanco para separar funciones y clases, y bloques de código dentro de funciones
 # Comillas consistentes: PEP 8 recomienda usar comillas dobles para cadenas de texto, a menos que la cadena contenga comillas dobles, en cuyo caso se pueden usar comillas simples
+
+
+def newsapi_client(
+    api_key, query, timeout=API_TIMEOUT_DEFAULT, retries=MAX_RETRIES_DEFAULT
+):
+    return f"NewsAPI: api_key={api_key}, query={query}, timeout={timeout}, retries={retries}"
+
+
+def guardian_client(
+    api_key,
+    section,
+    from_date,
+    timeout=API_TIMEOUT_DEFAULT,
+    retries=MAX_RETRIES_DEFAULT,
+):
+    return f"The Guardian: api_key={api_key}, section={section}, from_date={from_date}, timeout={timeout}, retries={retries}"
+
+
+def ejemplo_args(*args):
+    return f"TODOS: {args}"
+
+
+def custom_print(*args):
+    print(f"Todos: {args}")
+    print(type(args))
+
+
+custom_print(ejemplo_args("Este", "es", "un", "ejemplo", "de", "args"))
+custom_print(ejemplo_args("Hola", "mundo"))
+custom_print(ejemplo_args())
