@@ -19,9 +19,6 @@ DEFAULT_LANGUAGE = "es"  # PEP 8: Uso de comillas dobles para cadenas de texto
 url_template = os.getenv("URL_TEMPLATE")
 api_key_news_api = os.getenv("API_KEY_NEWS_API")
 
-print(f"URL Template: {url_template}")
-print(f"API Key News API: {api_key_news_api}")
-
 
 # PEP 8: Funciones con nombres descriptivos y snake_case
 def clean_text(text):
