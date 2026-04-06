@@ -1,12 +1,26 @@
+import os
+
+import requests
+from dotenv import load_dotenv
+
+# Cargar variables de entorno
+load_dotenv()
+
 # main.py - Todo el código en un archivo
 """
 Sistema de análisis de noticias con APIs múltiples.
 """
 
 # PEP 8: Configuración centralizada - constantes en MAYÚSCULAS con guiones bajos
-API_TIMEOUT_DEFAULT = 30
-MAX_RETRIES_DEFAULT = 3
+API_TIMEOUT_DEFAULT = int(os.getenv("API_TIMEOUT_DEFAULT", 30))
+MAX_RETRIES_DEFAULT = int(os.getenv("MAX_RETRIES_DEFAULT", 3))
 DEFAULT_LANGUAGE = "es"  # PEP 8: Uso de comillas dobles para cadenas de texto
+
+url_template = os.getenv("URL_TEMPLATE")
+api_key_news_api = os.getenv("API_KEY_NEWS_API")
+
+print(f"URL Template: {url_template}")
+print(f"API Key News API: {api_key_news_api}")
 
 
 # PEP 8: Funciones con nombres descriptivos y snake_case
@@ -46,7 +60,14 @@ def process_article_data(raw_data):
 def newsapi_client(
     api_key, query, timeout=API_TIMEOUT_DEFAULT, retries=MAX_RETRIES_DEFAULT
 ):
-    return f"NewsAPI: api_key={api_key}, query={query}, timeout={timeout}, retries={retries}"
+    print(
+        f"Conectando a NewsAPI con api_key={api_key}, query={query}, timeout={timeout}, retries={retries}"
+    )
+    response = requests.get(url_template.format(query, api_key), timeout=timeout)
+    if response.status_code != 200:
+        raise Exception(f"Error al conectar con NewsAPI: {response.status_code}")
+    print(response.json())
+    return response.json()
 
 
 def guardian_client(
@@ -118,3 +139,6 @@ def fetch_news(api_name, *args, **kwargs):
 
     client = api_clients[api_name]
     return client(*args, **config)
+
+
+fetch_news("newsapi", api_key_news_api, query="Noticias de Python")
