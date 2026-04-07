@@ -10,6 +10,19 @@ import urllib.request
 
 from dotenv import load_dotenv
 
+
+class NewsSystemError(Exception):
+    """Base class for exceptions in this module."""
+
+    pass
+
+
+class APIKeyError(NewsSystemError):
+    """Exception raised for errors in the API key."""
+
+    pass
+
+
 # Cargar variables de entorno
 load_dotenv()
 
@@ -69,8 +82,7 @@ def newsapi_client(
             data = response.read().decode("utf-8")
             return json.loads(data)
     except urllib.error.HTTPError as e:
-        print(f"HTTP error al obtener noticias: {e.code} - {e.reason}")
-        return {"articles": []}  # Retorna un resultado vacío en caso de error
+        raise APIKeyError(f"HTTP error occurred: {e.code} - {e.reason}")
 
     # if response.status_code != 200:
     #     raise Exception(f"Error al conectar con NewsAPI: {response.status_code}")
@@ -149,6 +161,14 @@ def fetch_news(api_name, *args, **kwargs):
     return client(*args, **config)
 
 
-response_data = fetch_news("newsapi", API_KEY_NEWS_API, query="Noticias de Python")
-for article in response_data["articles"]:
-    print(article["title"])
+response_data = None
+try:
+    response_data = fetch_news("newsapi", API_KEY_NEWS_API, query="Noticias de Python")
+except APIKeyError as e:
+    print(f"API Key error: {e}")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+if response_data:
+    for article in response_data["articles"]:
+        print(article["title"])
