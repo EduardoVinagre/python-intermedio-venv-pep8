@@ -144,7 +144,9 @@ def fetch_news(api_name, *args, **kwargs):
     client = api_clients[api_name]
     return client(*args, **config)
 
-
-response_data = fetch_news("newsapi", API_KEY_NEWS_API, query="Noticias de Python")
-for article in response_data["articles"]:
-    print(article["title"])
+try:
+    response_data = fetch_news("newsapi", API_KEY_NEWS_API, query="Noticias de Python")
+    for article in response_data["articles"]:
+        print(article["title"])
+except urllib.error.HTTPError as e:
+    print(f"HTTP error al obtener noticias: {e.code} - {e.reason}")
