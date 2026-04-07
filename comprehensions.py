@@ -40,8 +40,50 @@ sample_articles = [
 ]
 
 
-def extract_titles_traditional(articles):
-    """Extrae solo los títulos usando un for"""
+def extract_titles_traditional(articles:list[dict])->list[str]:
+    """
+    Extrae los títulos de una lista de artículos que superen un umbral de longitud.
+
+    Itera sobre cada artículo de la lista y agrega su título a la colección
+    de resultados únicamente si su longitud es mayor que la constante global
+    ``TITLE_LENGTH_THRESHOLD``. Equivale funcionalmente al uso de una
+    comprensión de lista con filtro, pero emplea un bucle ``for`` explícito.
+
+    Parameters
+    ----------
+    articles : list[dict]
+        Lista de diccionarios que representan artículos. Cada diccionario
+        debe contener al menos la clave ``"title"`` con un valor de tipo
+        ``str``.
+
+    Returns
+    -------
+    list[str]
+        Lista con los títulos cuya longitud supera ``TITLE_LENGTH_THRESHOLD``.
+        Puede ser una lista vacía si ningún título cumple la condición.
+
+    Raises
+    ------
+    KeyError
+        Si algún diccionario en ``articles`` no contiene la clave ``"title"``.
+    TypeError
+        Si ``articles`` no es iterable, o si el valor de ``"title"`` no es
+        de tipo ``str`` (ya que ``len()`` no aplica a todos los tipos).
+
+    Examples
+    --------
+    >>> TITLE_LENGTH_THRESHOLD = 10
+    >>> articles = [
+    ...     {"title": "Corto"},
+    ...     {"title": "Este título es suficientemente largo"},
+    ...     {"title": "Otro más"},
+    ... ]
+    >>> extract_titles_traditional(articles)
+    ['Este título es suficientemente largo']
+
+    >>> extract_titles_traditional([])
+    []
+    """
     titles = []
     for article in articles:
         if len(article["title"]) > TITLE_LENGTH_THRESHOLD:
