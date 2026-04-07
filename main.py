@@ -64,9 +64,13 @@ def newsapi_client(
     query_string = urllib.parse.urlencode({"q": query, "apiKey": api_key})
     url = f"{BASE_URL}?{query_string}"
 
-    with urllib.request.urlopen(url, timeout=timeout) as response:
-        data = response.read().decode("utf-8")
-        return json.loads(data)
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as response:
+            data = response.read().decode("utf-8")
+            return json.loads(data)
+    except urllib.error.HTTPError as e:
+        print(f"HTTP error al obtener noticias: {e.code} - {e.reason}")
+        return {"articles": []}  # Retorna un resultado vacío en caso de error
 
     # if response.status_code != 200:
     #     raise Exception(f"Error al conectar con NewsAPI: {response.status_code}")
@@ -144,9 +148,7 @@ def fetch_news(api_name, *args, **kwargs):
     client = api_clients[api_name]
     return client(*args, **config)
 
-try:
-    response_data = fetch_news("newsapi", API_KEY_NEWS_API, query="Noticias de Python")
-    for article in response_data["articles"]:
-        print(article["title"])
-except urllib.error.HTTPError as e:
-    print(f"HTTP error al obtener noticias: {e.code} - {e.reason}")
+
+response_data = fetch_news("newsapi", API_KEY_NEWS_API, query="Noticias de Python")
+for article in response_data["articles"]:
+    print(article["title"])

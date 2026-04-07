@@ -9,3 +9,7 @@ except ValueError:
     print("Error: Invalid input. Please enter a valid integer.")
 except ZeroDivisionError:
     print("Error: Division by zero is not allowed.")
+finally:
+    print("This block will always execute, regardless of exceptions.")
+
+print("Continuing with the rest of the program...")
