@@ -5,8 +5,8 @@ from typing import Callable
 
 from dotenv import load_dotenv
 
-from config import API_TIMEOUT_DEFAULT, BASE_URL, MAX_RETRIES_DEFAULT
 from exceptions.api_key_error import APIKeyError
+from news_analyzer.config import API_TIMEOUT_DEFAULT, BASE_URL, MAX_RETRIES_DEFAULT
 
 # Cargar variables de entorno
 load_dotenv()
