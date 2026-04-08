@@ -6,6 +6,7 @@ Sistema de análisis de noticias con APIs múltiples.
 from exceptions.api_key_error import APIKeyError
 from news_analyzer.config import API_KEY_NEWS_API
 from news_analyzer.news_api_client import fetch_news
+from news_analyzer.utils import get_unique_source
 
 # Longitud de línea: PEP 8 recomienda no exceder los 79 caracteres por línea
 # Indentación: PEP 8 recomienda usar 4 espacios por nivel de indentación, no tabs
@@ -24,5 +25,9 @@ except Exception as e:
     print(f"An error occurred: {e}")
 
 if response_data:
+    source_set = get_unique_source(response_data["articles"])
+    for index, source in enumerate(source_set, start=1):
+        print(f"No. {index} -- {source}")
+
     for article in response_data["articles"]:
-        print(article["title"])
+        print(article["source"])
