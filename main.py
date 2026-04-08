@@ -6,7 +6,11 @@ Sistema de análisis de noticias con APIs múltiples.
 from exceptions.api_key_error import APIKeyError
 from news_analyzer.config import API_KEY_NEWS_API
 from news_analyzer.news_api_client import fetch_news
-from news_analyzer.utils import get_articles_by_source, get_unique_source
+from news_analyzer.utils import (
+    get_articles_by_source,
+    get_reading_time,
+    get_unique_source,
+)
 
 # Longitud de línea: PEP 8 recomienda no exceder los 79 caracteres por línea
 # Indentación: PEP 8 recomienda usar 4 espacios por nivel de indentación, no tabs
@@ -38,3 +42,6 @@ if response_data:
 
     for article in geeksroom_articles:
         print(article["source"]["name"], article["title"])
+
+    articles = list(map(get_reading_time, response_data["articles"]))
+    print(articles[0])
