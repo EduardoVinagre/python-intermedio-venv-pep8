@@ -3,26 +3,9 @@
 Sistema de análisis de noticias con APIs múltiples.
 """
 
-import os
-
-from dotenv import load_dotenv
-
+from config import API_KEY_NEWS_API
 from exceptions.api_key_error import APIKeyError
-from guardian_client import guardian_client
-from news_api_client import newsapi_client
-
-# Cargar variables de entorno
-load_dotenv()
-
-
-# PEP 8: Configuración centralizada - constantes en MAYÚSCULAS con guiones bajos
-API_TIMEOUT_DEFAULT: int = int(os.getenv("API_TIMEOUT_DEFAULT", 30))
-MAX_RETRIES_DEFAULT: int = int(os.getenv("MAX_RETRIES_DEFAULT", 3))
-DEFAULT_LANGUAGE: str = "es"  # PEP 8: Uso de comillas dobles para cadenas de texto
-BASE_URL: str | None = os.getenv("BASE_URL")
-
-url_template: str | None = os.getenv("URL_TEMPLATE")
-API_KEY_NEWS_API: str | None = os.getenv("API_KEY_NEWS_API")
+from news_api_client import fetch_news
 
 
 # PEP 8: Funciones con nombres descriptivos y snake_case
@@ -57,29 +40,6 @@ def process_article_data(raw_data):
 # Imports ordenados: estándar -> terceros -> locales, cada grupo separado por una línea en blanco
 # Líneas en blanco: PEP 8 recomienda usar líneas en blanco para separar funciones y clases, y bloques de código dentro de funciones
 # Comillas consistentes: PEP 8 recomienda usar comillas dobles para cadenas de texto, a menos que la cadena contenga comillas dobles, en cuyo caso se pueden usar comillas simples
-
-
-def fetch_news(api_name: str, *args, **kwargs):
-    """
-    Función flexible para conectar con la API
-    """
-
-    base_config: dict = {
-        "timeout": API_TIMEOUT_DEFAULT,
-        "retries": MAX_RETRIES_DEFAULT,
-    }
-    config: dict = {
-        **base_config,
-        **kwargs,
-    }  # Combina la configuración base con los kwargs específicos
-
-    api_clients: dict = {
-        "newsapi": newsapi_client,
-        "guardian": guardian_client,
-    }
-
-    client: callable = api_clients[api_name]
-    return client(*args, **config)
 
 
 response_data = None
